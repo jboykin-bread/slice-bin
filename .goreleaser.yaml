@@ -1,0 +1,39 @@
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    dir: cmd/slice-bin
+    binary: slice-bin
+    goos:
+      - linux
+      - windows
+      - darwin
+    ldflags:
+      - -X main.Version={{.Version}}
+      - -X main.GitCommit={{.ShortCommit}}
+
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+
+checksum:
+  name_template: 'checksums.txt'
+
+changelog:
+  sort: asc
+  use: github-native
+
+release:
+  name_template: "v{{.Version}}"
+  header: |
+    ✨ Run `slice-bin tools upgrade` to upgrade!
+    📖 Read the docs at the [slice-bin User Guide](fake) on Confluence.
+    🤔 Get support at [#fake-channel](fake)  
+      
